@@ -1,0 +1,16 @@
+{
+  "name": "srrdb_uploader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "srrdb_upload.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
+    "form-data": "^3.0.0"
+  }
+}
