@@ -1,23 +1,34 @@
 #!/usr/bin/env node
 
-require("dotenv").config();
-const FormData = require("form-data");
-const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
+import { config } from "dotenv"
+import FormData from "form-data";
+import axios from "axios";
+import fs from "fs";
+import path from "path";
+import {version} from './package.json';
+import program from 'commander';
 
-const argv = require('yargs')
-  .usage('Usage: $0 <command> [options]')
-  .help('h')
-  .alias('h', 'help')
-  .command(['upload'], 'Upload an srr file to srrdb.')
-  .example('$0 upload file.srr')
-  .command(['get-login'], 'Logging in to srrdb and getting the login cooke.')
-  .example('$0 get-login')
-  .argv;
+// Load .env file
+config
+
+// define CLI parameters
+program
+  .version(version)
+program
+  .command('upload <file>')
+  .description('Upload an srr file to srrdb.')
+  .action(function(files) {
+    console.log("Uploading file...");
+  });
+
+program
+  .command('get-login')
+  .description('Logging in to srrdb and getting the login cooke.')
+  .action(function() {
+    console.log("Executing get-login...");
+  })
 
 
-console.log(argv);
 
 process.exit(1)
 
@@ -32,7 +43,7 @@ if (!fs.existsSync(backfillFolder)) {
   fs.mkdir(backfillFolder, { recursive: true }, err => {});
 }
 
-const fileSizeOk = file => {
+const fileSizeOk = (file: string) => {
   var stats = fs.statSync(file);
   if (stats["size"] >= 52428800) {
     return false;
@@ -41,12 +52,12 @@ const fileSizeOk = file => {
   }
 };
 
-const srrUpload = (file) => {
+const srrUpload = (file: string) => {
   let retries = 0;
   const fileName = path.basename(file);
   const file_data = fs.readFileSync(file);
 
-  if (fileSizeOk) {
+  if (fileSizeOk(file)) {
     const form = new FormData();
     form.append("files[]", file_data, fileName );
 
@@ -55,7 +66,7 @@ const srrUpload = (file) => {
       method: "post",
       data: form,
       headers: {
-        "Content-Type": `multipart/form-data; boundary=${form._boundary}`,
+        "Content-Type": `multipart/form-data; boundary=--${form.getBoundary()}`,
         "Content-Length": form.getLengthSync(),
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0",
         //"Accept": "application/json, text/javascript, */*; q=0.01",
