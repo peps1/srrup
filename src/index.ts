@@ -1,15 +1,14 @@
-#!/usr/bin/env node
 
 import { config } from "dotenv"
 import FormData from "form-data";
 import axios from "axios";
 import fs from "fs";
 import path from "path";
-import {version} from './package.json';
 import program from 'commander';
 
 // Load .env file
 config
+const version = process.env.npm_package_version || 'unknown';
 
 // define CLI parameters
 program

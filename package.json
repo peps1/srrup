@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "module",
   "type": "",
-  "main": "dist/srrdb_upload.js",
+  "main": "dist/index.js",
   "bin": {
-    "srrdb_upload": "./dist/srrdb_upload"
+    "srrup": "./src/srrup.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
