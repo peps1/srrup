@@ -16,7 +16,9 @@
     "axios": "^0.19.2",
     "commander": "^4.1.1",
     "dotenv": "^8.2.0",
-    "form-data": "^3.0.0"
+    "form-data": "^3.0.0",
+    "https": "^1.0.0",
+    "prompt-sync": "^4.2.0"
   },
   "devDependencies": {
     "tslint": "^6.0.0",
