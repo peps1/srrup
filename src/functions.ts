@@ -1,123 +1,114 @@
-
-import FormData from "form-data";
-import axios from "axios";
-import qs from 'querystring';
-import fs from "fs";
+/* eslint-disable no-console */
+import FormData from 'form-data';
+import axios from 'axios';
+import qs from 'qs';
+import fs from 'fs';
 import https from 'https';
-import path from "path";
+import path from 'path';
+import prompt from 'prompt-sync';
 
 const httpsAgent = new https.Agent({ keepAlive: true });
 
-export const version = process.env.npm_package_version || 'unknown';
+export const version = process.env.npm_package_version || '1.0.0-git';
 
-export const fileSizeOk = (file: string) => {
-  var stats = fs.statSync(file);
-  if (stats["size"] >= 52428800) {
+export const fileSizeOk = (file: string): boolean => {
+  const stats = fs.statSync(file);
+  if (stats.size >= 52428800) {
     return false;
   } else {
     return true;
   }
 };
 
-export const setFolder = (folder: string) => {
+export const setFolder = (folder: string): boolean => {
   if (!fs.existsSync(folder)) {
-    fs.mkdir(folder, { recursive: true }, err => { });
+    fs.mkdir(folder, { recursive: true }, (err) => { return err });
   }
-}
+  return true;
+};
 
-export const getLoginCookie = () => {
-  var prompt = require('prompt-sync')();
+export const getLoginCookie = (): any => {
 
-  let username = prompt('Username: ');
-  let password = prompt('Password: ');
+  const username = prompt('Username: ');
+  const password = prompt('Password: ');
 
-  const url = "https://www.srrdb.com/account/login"
+  const url = 'https://www.srrdb.com/account/login';
 
-  const data = {
-    "username": username,
-    "password": password,
-    "login"   : 'Login',
-  }
+  const data = qs.stringify({
+    username,
+    password,
+  });
+
 
   axios({
-    url: url,
-    method: "post",
+    url,
+    method: 'POST',
     httpsAgent,
-    data: qs.stringify(data),
+    data,
+    maxRedirects: 0,
+    validateStatus: status => {
+      return status <= 302; // Reject only if the status code is greater than 302
+    },
     headers: {
-      "Content-Type": 'application/x-www-form-urlencoded',
-      "Content-Length": qs.stringify(data).length,
-      //"User-Agent": `srrup.js/${version}`,
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0",
-      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-      "Accept-Encoding": "deflate, gzip",
-      "Origin": "https://www.srrdb.com",
-      "Referer": "https://www.srrdb.com/",
-      "Upgrade-Insecure-Requests": "1",
-      "Host": "www.srrdb.com",
-      //"Accept": "application/json, text/javascript, */*; q=0.01",
-      //"X-Requested-With": "XMLHttpRequest",
-    }
+      'Content-Length': data.length,
+      'User-Agent': `srrup.js/${version}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
   })
-    .then(function (response) {
-      //handle success
-      console.log(
-        `${response.data}`
-      );
-      console.log(response.headers);
-      console.log(response.headers['set-cookie']);
-      console.log(response)
+    .then( response => {
+      // handle success
+      console.log((response.headers)['set-cookie']);
+      // write cookie to .env file
     })
-    .catch(function (response) {
+    .catch( error => {
       console.log(
-        `${response.status} ${response.statusText} - ${response.data}`
+        `${error.status} ${error.statusText} - ${error.data}`
       );
-      console.log(response.headers);
+      console.log(error.headers);
     });
+};
 
-}
-
-export const srrUpload = (file: string) => {
-
+export const srrUpload = (file: string): boolean => {
   const cookie = process.env.COOKIE;
-  const url = "https://www.srrdb.com/release/upload"
+  const url = 'https://www.srrdb.com/release/upload';
 
-  let retries = 0;
+
   const fileName = path.basename(file);
-  const file_data = fs.readFileSync(file);
+  const fileData = fs.readFileSync(file);
 
   if (fileSizeOk(file)) {
     const form = new FormData();
-    form.append("files[]", file_data, fileName);
-
+    form.append('files[]', fileData, fileName);
 
     axios({
-      url: url,
-      method: "post",
+      url,
+      method: 'post',
       httpsAgent,
       data: form,
       headers: {
-        "Content-Type": `multipart/form-data; boundary=--${form.getBoundary()}`,
-        "Content-Length": form.getLengthSync(),
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0",
-        //"Accept": "application/json, text/javascript, */*; q=0.01",
-        "X-Requested-With": "XMLHttpRequest",
-        "Cookie": cookie,
-      }
+        'Content-Type': `multipart/form-data; boundary=--${form.getBoundary()}`,
+        'Content-Length': form.getLengthSync(),
+        'User-Agent': `srrup.js/${version}`,
+        'X-Requested-With': 'XMLHttpRequest',
+        Cookie: cookie,
+      },
     })
-      .then(function (response) {
-        //handle success
+      .then( response => {
+        // handle success
         console.log(
           `${response.status} ${response.statusText}: Successful uploaded file ${file}`
         );
         console.log(response);
         console.log(response.data);
+        return true;
       })
-      .catch(function (response) {
+      .catch( error => {
         console.log(
-          `${response.status} ${response.statusText}: Error while uploading file ${file}`
+          `${error.status} ${error.statusText}: Error while uploading file ${file}`
         );
-        console.log(response);
+        console.log(error);
+        return false;
       });
   }
+  return true;
 };
