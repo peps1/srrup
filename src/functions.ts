@@ -113,3 +113,18 @@ export const srrUpload = (file: string): boolean => {
   }
   return true;
 };
+
+export const printHelpText = (): string => {
+  return `Usage: srrup file.srr <file2.srr> <file3.srr>
+Upload one or more .srr files to srrdb.com, if no option is specified as listed below,
+all parameters are expected to be .srr files and will be uploaded.
+
+Example:
+  srrup files/file1.srr more/file2.srr
+Options:
+  -l, --login     login to srrdb.com and save auth info
+  -d, --debug     print debug information
+  -h, --help      show this help
+  -v, --version   print the current version
+`
+}
