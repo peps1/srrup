@@ -5,11 +5,12 @@ import qs from 'qs';
 import fs from 'fs';
 import https from 'https';
 import path from 'path';
-import prompt from 'prompt-sync';
+import promptSync from 'prompt-sync';
 
 const httpsAgent = new https.Agent({ keepAlive: true });
+const prompt = promptSync();
 
-export const version = process.env.npm_package_version || '1.0.0-git';
+export const version = process.env.npm_package_version || '0.999-git';
 
 export const fileSizeOk = (file: string): boolean => {
   const stats = fs.statSync(file);
@@ -30,7 +31,7 @@ export const setFolder = (folder: string): boolean => {
 export const getLoginCookie = (): any => {
 
   const username = prompt('Username: ');
-  const password = prompt('Password: ');
+  const password = prompt.hide('Password: ');
 
   const url = 'https://www.srrdb.com/account/login';
 
