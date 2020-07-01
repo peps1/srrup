@@ -1,35 +1,35 @@
 {
   "name": "srrdb_uploader",
-  "version": "1.0.0",
-  "description": "module",
-  "type": "",
+  "version": "1.0.0-alpha.1",
+  "description": "Upload .srr files to srrdb.com",
   "main": "dist/index.js",
   "bin": {
-    "srrup": "./src/srrup.js"
+    "srrup": "dist/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx tsc"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/minimist": "^1.2.0",
     "@types/prompt-sync": "^4.1.0",
-    "@types/qs": "^6.9.2",
+    "@types/qs": "^6.9.3",
     "axios": "^0.19.2",
-    "commander": "^4.1.1",
     "dotenv": "^8.2.0",
     "form-data": "^3.0.0",
+    "minimist": "^1.2.5",
     "prompt-sync": "^4.2.0",
     "qs": "^6.9.4"
   },
   "devDependencies": {
-    "@types/node": "^13.13.5",
-    "@typescript-eslint/eslint-plugin": "^2.31.0",
-    "@typescript-eslint/parser": "^2.31.0",
+    "@types/node": "^13.13.12",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jsdoc": "^24.0.6",
     "eslint-plugin-prefer-arrow": "^1.2.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.5"
   }
 }
