@@ -58,7 +58,24 @@ export const getLoginCookie = (): any => {
   })
     .then( response => {
       // handle success
-      console.log((response.headers)['set-cookie']);
+      const cookies: string[] = [];
+
+      // Iterate through received cookies
+      (response.headers)['set-cookie'].forEach( (cookie: string) => {
+        if (cookie.startsWith('uid=')) {
+          console.log(cookie)
+          cookies.push(cookie);
+        }
+        else if (cookie.startsWith('hash=')) {
+          console.log(cookie)
+          cookies.push(cookie);
+        }
+      });
+
+      if (cookies.length !== 2) {
+        console.error('Couldn\'t get all necessary headers, try again.')
+        console.debug((response.headers)['set-cookie'])
+      }
       // write cookie to .env file
     })
     .catch( error => {
