@@ -21,11 +21,89 @@ export const fileSizeOk = (file: string): boolean => {
   }
 };
 
+
 export const setFolder = (folder: string): boolean => {
   if (!fs.existsSync(folder)) {
     fs.mkdir(folder, { recursive: true }, (err) => { return err });
   }
   return true;
+};
+
+const extractUid = (cookie: string): number => {
+  const c = cookie.split(' ');
+  let ret = 0;
+  c.forEach( k => {
+    if (k.startsWith('uid=')) {
+      ret = Number(k.split('=')[1].slice(0, -1))
+    }
+  });
+
+  return ret;
+}
+
+const testLoginCookie = (): boolean => {
+  // try api call with the cookie
+  const baseUrl = 'https://www.srrdb.com/api/search';
+  const cookie = process.env.COOKIE || '';
+  const uid = extractUid(cookie);
+  if (uid === 0) {
+    console.log('Couldn\'t extract uid from cookie, need to create new login cookie')
+    return false;
+  } else {
+    const url = `${baseUrl}/userid:${uid}`
+
+    axios({
+      url,
+      method: 'get',
+      // httpsAgent,
+      headers: {
+        'User-Agent': `srrup.js/${version}`,
+        Cookie: cookie,
+      },
+    })
+      .then( response => {
+        // handle success
+        console.log(
+          `${response.status} ${response.statusText}: Current login cookie is valid.`
+        );
+        console.log(response);
+        console.log(response.data);
+        return true;
+      })
+      .catch( error => {
+        console.log(
+          `${error.status} ${error.statusText}: Current login cookie is invalid.`
+        );
+        console.log(error);
+        return false;
+      });
+
+  }
+
+  return false;
+
+}
+
+export const checkLoginCookie = (): boolean => {
+  let validCookie;
+  let overwriteCookie;
+
+  if (process.env.COOKIE) {
+    console.log('Found existing login cookie');
+    validCookie = testLoginCookie();
+  }
+  if (validCookie) {
+    overwriteCookie = prompt('Found valid cookie, do you want to overwrite it? (y/n) ', 'n')
+    if (overwriteCookie === 'y') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  // false will tell it to create new login Cookie
+  console.log('no valid cookie')
+  return false;
 };
 
 export const getLoginCookie = (): any => {
@@ -64,23 +142,30 @@ export const getLoginCookie = (): any => {
   })
     .then( response => {
       // handle success
-      const cookies: string[] = [];
+      const authCookie: string[] = [];
 
       // Iterate through received cookies
       (response.headers)['set-cookie'].forEach( (cookie: string) => {
         if (cookie.startsWith('uid=')) {
-          console.log(cookie)
-          cookies.push(cookie);
+          authCookie.push(cookie.split(' ')[0]);
         }
         else if (cookie.startsWith('hash=')) {
-          console.log(cookie)
-          cookies.push(cookie);
+          authCookie.push(cookie.split(' ')[0]);
+        }
+        else if (cookie.startsWith('srrdb_session=')) {
+          authCookie.push(cookie.split(' ')[0]);
         }
       });
 
-      if (cookies.length !== 2) {
-        console.error('Couldn\'t get all necessary headers, try again.')
-        console.debug((response.headers)['set-cookie'])
+      if (authCookie.length !== 3) {
+        console.error('Couldn\'t get all necessary headers, try again.');
+        console.debug((response.headers)['set-cookie']);
+        console.debug(authCookie);
+        process.exit(1);
+      } else {
+        // transform to cookie format: "uid=uid_here; hash=hash_here; srrdb_session=session_hash_here"
+        fs.writeFileSync('.env', `COOKIE=${authCookie.join(' ')}`);
+        console.log(`Writing login Cookie to file ".env". COOKIE=${authCookie.join(' ')}`);
       }
       // write cookie to .env file
     })

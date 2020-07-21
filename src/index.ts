@@ -3,9 +3,9 @@
 /* eslint-disable no-console */
 
 import { config } from 'dotenv'
-import 'minimist'
-import * as functions from './functions';
 import minimist from 'minimist';
+
+import * as functions from './functions';
 
 // Load .env file
 config()
@@ -44,11 +44,14 @@ else if (args.version) {
 }
 
 else if (args.login) {
-  console.log('Please login to srrdb.com...');
-  functions.getLoginCookie();
+  if (!functions.checkLoginCookie()) {
+    console.log('Please login to srrdb.com...');
+    functions.getLoginCookie();
+  }
 }
 
 // When no switch consider every parameter as file to upload
+// https://github.com/substack/minimist#var-argv--parseargsargs-opts
 else if (args._) {
   console.log(args._);
   args._.forEach((file: string) => {
