@@ -137,8 +137,7 @@ export const srrUpload = (file: string): boolean => {
   return true;
 };
 
-export const printHelpText = (): string => {
-  return `Usage: srrup file.srr <file2.srr> <file3.srr>
+export const printHelpText = `Usage: srrup file.srr <file2.srr> <file3.srr>
 Upload one or more .srr files to srrdb.com, if no option is specified as listed below,
 all parameters are expected to be .srr files and will be uploaded.
 
@@ -150,4 +149,3 @@ Options:
   -h, --help      show this help
   -v, --version   print the current version
 `
-}

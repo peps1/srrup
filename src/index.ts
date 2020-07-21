@@ -36,7 +36,7 @@ const args = minimist(process.argv.slice(2), {
 
 
 if (args.help) {
-  console.log(functions.printHelpText());
+  console.log(functions.printHelpText);
 }
 
 else if (args.version) {
