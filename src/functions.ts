@@ -31,7 +31,13 @@ export const setFolder = (folder: string): boolean => {
 export const getLoginCookie = (): any => {
 
   const username = prompt('Username: ');
-  const password = prompt.hide('Password: ');
+  const password = prompt('Password: ', {echo: '*'});
+
+  console.log()
+  if (username === '' || password === '' || !username || !password) {
+    console.error('Incomplete login information entered.');
+    process.exit(1);
+  }
 
   const url = 'https://www.srrdb.com/account/login';
 
