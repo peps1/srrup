@@ -32,32 +32,37 @@ const args = minimist(process.argv.slice(2), {
     v: 'version'
   },
 
-})
+});
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+(async () => {
 
 
-if (args.help) {
-  console.log(functions.printHelpText);
-}
-
-else if (args.version) {
-  console.log(functions.version);
-}
-
-else if (args.login) {
-  if (!functions.checkLoginCookie()) {
-    console.log('Please login to srrdb.com...');
-    functions.getLoginCookie();
+  if (args.help) {
+    console.log(functions.printHelpText);
   }
-}
 
-// When no switch consider every parameter as file to upload
-// https://github.com/substack/minimist#var-argv--parseargsargs-opts
-else if (args._) {
-  console.log(args._);
-  args._.forEach((file: string) => {
-    console.log(`Uploading file: ${file}`)
-  //  // functions.srrUpload(file);
-  });
-}
+  else if (args.version) {
+    console.log(functions.version);
+  }
+
+  else if (args.login) {
+    const validCookie = await functions.checkLoginCookie()
+    if (!validCookie) {
+      console.log('Please login to srrdb.com...');
+      functions.getLoginCookie();
+    }
+  }
+
+  // When no switch consider every parameter as file to upload
+  // https://github.com/substack/minimist#var-argv--parseargsargs-opts
+  else if (args._) {
+    console.log(args._);
+    args._.forEach((file: string) => {
+      console.log(`Uploading file: ${file}`)
+    //  // functions.srrUpload(file);
+    });
+  }
 
 
+})();

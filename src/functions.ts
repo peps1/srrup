@@ -41,23 +41,27 @@ const extractUid = (cookie: string): number => {
   return ret;
 }
 
-const testLoginCookie = (): boolean => {
+const testLoginCookie = async (): Promise<boolean> => {
   // try api call with the cookie
   const baseUrl = 'https://www.srrdb.com/api/search';
   const cookie = process.env.COOKIE || '';
   const uid = extractUid(cookie);
+  const url = `${baseUrl}/userid:${uid}`
+
   if (uid === 0) {
     console.log('Couldn\'t extract uid from cookie, need to create new login cookie')
     return false;
   } else {
-    const url = `${baseUrl}/userid:${uid}`
-
-    axios({
+    let ret = false;
+    await axios({
       url,
       method: 'get',
-      // httpsAgent,
+      responseType: 'json',
+      httpsAgent,
       headers: {
         'User-Agent': `srrup.js/${version}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
         Cookie: cookie,
       },
     })
@@ -66,32 +70,30 @@ const testLoginCookie = (): boolean => {
         console.log(
           `${response.status} ${response.statusText}: Current login cookie is valid.`
         );
-        console.log(response);
         console.log(response.data);
-        return true;
+        ret = true;
       })
       .catch( error => {
         console.log(
           `${error.status} ${error.statusText}: Current login cookie is invalid.`
         );
         console.log(error);
-        return false;
+        ret = false;
       });
 
+    return ret;
   }
-
-  return false;
 
 }
 
-export const checkLoginCookie = (): boolean => {
-  let validCookie;
+export const checkLoginCookie = async (): Promise<boolean> => {
   let overwriteCookie;
 
-  if (process.env.COOKIE) {
-    console.log('Found existing login cookie');
-    validCookie = testLoginCookie();
+  if (!process.env.COOKIE) {
+    console.log('No existing cookie found.')
+    return false
   }
+  const validCookie = await testLoginCookie()
   if (validCookie) {
     overwriteCookie = prompt('Found valid cookie, do you want to overwrite it? (y/n) ', 'n')
     if (overwriteCookie === 'y') {
