@@ -57,10 +57,15 @@ const args = minimist(process.argv.slice(2), {
   // When no switch consider every parameter as file to upload
   // https://github.com/substack/minimist#var-argv--parseargsargs-opts
   else if (args._) {
-    console.log(args._);
+    // User needs to log in first.
+    const cookie = process.env.COOKIE || '';
+    if (cookie === '') {
+      console.log('No existing login cookie found, please login to srrdb.com first...');
+      await functions.getLoginCookie();
+    }
     args._.forEach((file: string) => {
       console.log(`Uploading file: ${file}`)
-    //  // functions.srrUpload(file);
+      // functions.srrUpload(file);
     });
   }
 
