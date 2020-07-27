@@ -43,10 +43,9 @@ const extractUid = (cookie: string): number => {
 
 const testLoginCookie = async (): Promise<boolean> => {
   // try api call with the cookie
-  const baseUrl = 'https://www.srrdb.com/api/search';
+  const url = 'https://www.srrdb.com/account/settings';
   const cookie = process.env.COOKIE || '';
   const uid = extractUid(cookie);
-  const url = `${baseUrl}/userid:${uid}`
 
   if (uid === 0) {
     console.log('Couldn\'t extract uid from cookie, need to create new login cookie')
@@ -58,6 +57,7 @@ const testLoginCookie = async (): Promise<boolean> => {
       method: 'get',
       responseType: 'json',
       httpsAgent,
+      maxRedirects: 0,
       headers: {
         'User-Agent': `srrup.js/${version}`,
         'Content-Type': 'application/json',
@@ -70,15 +70,16 @@ const testLoginCookie = async (): Promise<boolean> => {
         console.log(
           `${response.status} ${response.statusText}: Current login cookie is valid.`
         );
-        console.log(response.data);
         ret = true;
       })
       .catch( error => {
-        console.log(
-          `${error.status} ${error.statusText}: Current login cookie is invalid.`
-        );
-        console.log(error);
-        ret = false;
+        if (error.response.status === 302) {
+          console.log('Current login cookie is invalid.');
+          ret = false;
+        } else {
+          console.log(`Unknown error: ${error}`);
+          process.exit(1)
+        }
       });
 
     return ret;
