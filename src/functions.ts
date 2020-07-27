@@ -47,6 +47,8 @@ const testLoginCookie = async (): Promise<boolean> => {
   const cookie = process.env.COOKIE || '';
   const uid = extractUid(cookie);
 
+  console.log('Connecting to srrdb.com to check if the cookie is still valid...')
+
   if (uid === 0) {
     console.log('Couldn\'t extract uid from cookie, need to create new login cookie')
     return false;
@@ -109,7 +111,7 @@ export const checkLoginCookie = async (): Promise<boolean> => {
   return false;
 };
 
-export const getLoginCookie = (): any => {
+export const getLoginCookie = async (): Promise<any> => {
 
   const username = prompt('Username: ');
   const password = prompt('Password: ', {echo: '*'});
@@ -128,7 +130,7 @@ export const getLoginCookie = (): any => {
   });
 
 
-  axios({
+  await axios({
     url,
     method: 'POST',
     httpsAgent,
@@ -198,7 +200,7 @@ export const srrUpload = (file: string): boolean => {
       httpsAgent,
       data: form,
       headers: {
-        'Content-Type': `multipart/form-data; boundary=--${form.getBoundary()}`,
+        'Content-Type': `multipart/form-data; boundary=${form.getBoundary()}`,
         'Content-Length': form.getLengthSync(),
         'User-Agent': `srrup.js/${version}`,
         'X-Requested-With': 'XMLHttpRequest',
@@ -206,17 +208,20 @@ export const srrUpload = (file: string): boolean => {
       },
     })
       .then( response => {
-        // handle success
-        console.log(
-          `${response.status} ${response.statusText}: Successful uploaded file ${file}`
-        );
-        console.log(response);
-        console.log(response.data);
-        return true;
+        // The request can be successful but the upload can still have failed.
+        if (response.data.files[0].color === 0) {
+          console.log(`${response.data.files[0].message} when uploading file ${file}`);
+          return false;
+        } else {
+          console.log(
+            `${response.status} ${response.statusText}: Successful uploaded file ${file}${response.data.files[0].message}`
+          );
+          return true;
+        }
       })
       .catch( error => {
         console.log(
-          `${error.status} ${error.statusText}: Error while uploading file ${file}`
+          `${error.response.status} ${error.response.statusText}: Error while uploading file ${file}`
         );
         console.log(error);
         return false;
