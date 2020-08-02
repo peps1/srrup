@@ -12,6 +12,10 @@
 * Save failed file to backfill/ folder
 * On every successful upload the backfill folder is checked for files still needing to be uploaded
 
+## Requirements
+* NodeJS >= 10 (https://nodejs.org/en/download/package-manager/)
+* npm (https://www.npmjs.com/get-npm)
+
 ## Install
 
 `npm i -g srrdb_uploader`
