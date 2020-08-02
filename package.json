@@ -7,7 +7,7 @@
   "author": {
     "name": "pepsi"
   },
-  "main": "./dist/index.js",
+  "main": "./build/index.js",
   "bin": {
     "srrup": "./build/index.js"
   },
