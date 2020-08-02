@@ -1,8 +1,8 @@
 {
-  "name": "srrdb_uploader",
+  "name": "srrup",
   "version": "1.0.0-beta.1",
   "description": "Upload .srr files to srrdb.com",
-  "homepage": "https://github.com/peps1/airdcpp-auto-downloader",
+  "homepage": "https://github.com/peps1/srrup",
   "license": "MIT",
   "author": {
     "name": "pepsi"
@@ -16,14 +16,15 @@
   ],
   "scripts": {
     "dev": "npx tsc",
-    "build": "ncc build -o build"
+    "build": "ncc build -o build",
+    "test": "true"
   },
   "bugs": {
-    "url": "https://github.com/peps1/airdcpp-auto-downloader/issues/"
+    "url": "https://github.com/peps1/srrup/issues/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/peps1/airdcpp-auto-downloader"
+    "url": "https://github.com/peps1/srrup"
   },
   "devDependencies": {
     "@types/minimist": "^1.2.0",
