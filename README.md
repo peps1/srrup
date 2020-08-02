@@ -3,12 +3,12 @@
 ## Features
 
 * Login through the CLI
-* Save and reuse login cookie
+* Save and reuse login cookie (~/.config/.env)
 * Better error handling
 
 ## Planned features
-
-* check that file is really a srr file.
+* check that file is really a srr file
+* provide standalone binary
 * Save failed file to backfill/ folder
 * On every successful upload the backfill folder is checked for files still needing to be uploaded
 
