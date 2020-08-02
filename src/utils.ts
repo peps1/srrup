@@ -12,7 +12,6 @@ Example:
     srrup files/file1.srr more/file2.srr
 Options:
     -l, --login     login to srrdb.com and save auth info
-    -d, --debug     print debug information
     -h, --help      show this help
     -v, --version   print the current version
 `
