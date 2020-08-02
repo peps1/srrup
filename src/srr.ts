@@ -44,7 +44,7 @@ export const srrUpload = (file: string): boolean => {
                     return false;
                 } else {
                     console.log(
-                        `${response.status} ${response.statusText}: Successful uploaded file ${file}${response.data.files[0].message}`
+                        `${response.status} ${response.statusText}: Successful uploaded file ${file} - ${response.data.files[0].message}`
                     );
                     return true;
                 }
