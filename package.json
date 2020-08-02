@@ -17,7 +17,8 @@
   "scripts": {
     "dev": "npx tsc",
     "build": "genversion --es6 --semi src/version.ts && ncc build -o build",
-    "test": "true"
+    "test": "true",
+    "prepublishOnly": "npm run build"
   },
   "bugs": {
     "url": "https://github.com/peps1/srrup/issues/"
