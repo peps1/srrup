@@ -1,6 +1,6 @@
 {
   "name": "srrup",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Upload .srr files to srrdb.com",
   "homepage": "https://github.com/peps1/srrup",
   "license": "MIT",
@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "dev": "npx tsc",
-    "build": "ncc build -o build",
+    "build": "genversion --es6 --semi src/version.ts && ncc build -o build",
     "test": "true"
   },
   "bugs": {
@@ -40,6 +40,7 @@
     "eslint-plugin-jsdoc": "^24.0.6",
     "eslint-plugin-prefer-arrow": "^1.2.2",
     "form-data": "^3.0.0",
+    "genversion": "^2.2.1",
     "minimist": "^1.2.5",
     "prompt-sync": "^4.2.0",
     "qs": "^6.9.4",

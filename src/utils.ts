@@ -2,11 +2,12 @@
 import fs from 'fs';
 import os from 'os';
 import https from 'https';
+import {version as ver} from './version';
 
 export const configFolder = `${os.homedir()}/.config/srrdb`
 export const backfillFolder = `${os.homedir()}/.config/srrdb/backfill`;
 
-export const version = process.env.npm_package_version || '0.999-git';
+export const version = ver;
 
 export const printHelpText = `Usage: srrup file.srr <file2.srr> <file3.srr>
 Upload one or more .srr files to srrdb.com, if no option is specified as listed below,
