@@ -18,8 +18,7 @@
 
 ## Install
 
-`npm i -g srrdb_uploader`
-
+`npm i -g srrup`
 ## Usage
 
 `srrup --help`
