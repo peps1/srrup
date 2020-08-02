@@ -1,4 +1,4 @@
-# srrDB Uploader
+# srrDB Uploader ![build](https://github.com/peps1/srrup/workflows/build/badge.svg)
 
 ## Features
 
