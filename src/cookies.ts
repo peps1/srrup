@@ -5,6 +5,8 @@ import qs from 'qs';
 
 import * as utils from './utils';
 
+const prompt = promptSync();
+
 export const testLoginCookie = async (): Promise<boolean> => {
     // try api call with the cookie
     const url = 'https://www.srrdb.com/account/settings';
@@ -82,7 +84,6 @@ export const checkLoginCookie = async (): Promise<boolean> => {
 };
 
 export const getLoginCookie = async (): Promise<any> => {
-    const prompt = promptSync();
     const username = prompt('Username: ');
     const password = prompt('Password: ', { echo: '*' });
 
@@ -136,7 +137,7 @@ export const getLoginCookie = async (): Promise<any> => {
                 process.exit(1);
             } else {
                 // transform to cookie format: "uid=uid_here; hash=hash_here; srrdb_session=session_hash_here"
-                fs.writeFileSync('.env', `COOKIE=${authCookie.join(' ')}`);
+                fs.writeFileSync(`${utils.configFolder}/.env`, `COOKIE="${authCookie.join(' ')}"\n`);
                 console.log(
                     `Writing login Cookie to file ".env". COOKIE=${authCookie.join(' ')}`
                 );

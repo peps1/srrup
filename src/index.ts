@@ -2,17 +2,14 @@
 
 /* eslint-disable no-console */
 
-import { config } from 'dotenv'
+import './env';
+
 import minimist from 'minimist';
 
 import * as utils from './utils';
 import * as cookies from './cookies';
 import * as srr from './srr';
 
-// Load .env file
-config()
-
-const backfillFolder = 'backfill';
 
 const args = minimist(process.argv.slice(2), {
 
@@ -37,16 +34,21 @@ const args = minimist(process.argv.slice(2), {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 (async () => {
 
-    utils.setFolder(backfillFolder);
+    // Ensure config and backfill folder are created
+    utils.setFolder(utils.configFolder)
+    utils.setFolder(utils.backfillFolder);
 
+    // -h | --help command
     if (args.help) {
         console.log(utils.printHelpText);
     }
 
+    // -v | --version command
     else if (args.version) {
         console.log(utils.version);
     }
 
+    // -l | --login command
     else if (args.login) {
         const validCookie = await cookies.checkLoginCookie()
         if (!validCookie) {

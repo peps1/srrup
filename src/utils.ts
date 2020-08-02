@@ -1,6 +1,10 @@
 
 import fs from 'fs';
+import os from 'os';
 import https from 'https';
+
+export const configFolder = `${os.homedir()}/.config/srrdb`
+export const backfillFolder = `${os.homedir()}/.config/srrdb/backfill`;
 
 export const version = process.env.npm_package_version || '0.999-git';
 
@@ -29,11 +33,14 @@ export const httpsAgent = new https.Agent({ keepAlive: true });
 
 export const setFolder = (folder: string): boolean => {
     if (!fs.existsSync(folder)) {
-        fs.mkdir(folder, { recursive: true }, (err) => {
-            return err;
-        });
+        if (fs.mkdirSync(folder, { recursive: true })) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
     }
-    return true;
 };
 
 export const extractUid = (cookie: string): number => {
