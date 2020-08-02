@@ -1,35 +1,47 @@
 {
   "name": "srrdb_uploader",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-beta.1",
   "description": "Upload .srr files to srrdb.com",
-  "main": "dist/index.js",
+  "homepage": "https://github.com/peps1/airdcpp-auto-downloader",
+  "license": "MIT",
+  "author": {
+    "name": "pepsi"
+  },
+  "main": "./dist/index.js",
   "bin": {
-    "srrup": "dist/index.js"
+    "srrup": "./build/index.js"
   },
+  "files": [
+    "./build/index.js"
+  ],
   "scripts": {
-    "build": "npx tsc"
+    "dev": "npx tsc",
+    "build": "ncc build -o build"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@types/minimist": "^1.2.0",
-    "@types/prompt-sync": "^4.1.0",
-    "@types/qs": "^6.9.4",
-    "axios": "^0.19.2",
-    "dotenv": "^8.2.0",
-    "form-data": "^3.0.0",
-    "minimist": "^1.2.5",
-    "prompt-sync": "^4.2.0",
-    "qs": "^6.9.4"
+  "bugs": {
+    "url": "https://github.com/peps1/airdcpp-auto-downloader/issues/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peps1/airdcpp-auto-downloader"
   },
   "devDependencies": {
+    "@types/minimist": "^1.2.0",
     "@types/node": "^13.13.15",
+    "@types/prompt-sync": "^4.1.0",
+    "@types/qs": "^6.9.4",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
+    "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jsdoc": "^24.0.6",
     "eslint-plugin-prefer-arrow": "^1.2.2",
+    "form-data": "^3.0.0",
+    "minimist": "^1.2.5",
+    "prompt-sync": "^4.2.0",
+    "qs": "^6.9.4",
     "typescript": "^3.9.7"
   }
 }
