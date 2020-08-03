@@ -9,6 +9,7 @@ import minimist from 'minimist';
 import * as utils from './utils';
 import * as cookies from './cookies';
 import * as srr from './srr';
+import * as backfill from './backfill';
 
 
 const args = minimist(process.argv.slice(2), {
@@ -66,9 +67,22 @@ const args = minimist(process.argv.slice(2), {
             console.log('No existing login cookie found, please login to srrdb.com first...');
             await cookies.getLoginCookie();
         }
+
+        let lastUploadSuccessful = false;
+
+        // Call srrUpload for each file
         args._.forEach((file: string) => {
-            srr.srrUpload(file);
+            if (srr.srrUpload(file)) {
+                lastUploadSuccessful = true;
+            } else {
+                lastUploadSuccessful = false;
+            }
         });
+
+        // if the most recent file upload succeeded, take a look in backfill folder and process them
+        if (lastUploadSuccessful){
+            backfill.processBackfill();
+        }
     }
 
 
