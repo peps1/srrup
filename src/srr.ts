@@ -4,29 +4,28 @@ import fs from 'fs';
 import path from 'path';
 import * as utils from './utils';
 
-const { COPYFILE_EXCL } = fs.constants;
-
-const copyCb = (err: any): void => {
-    if (err) { throw err };
-    console.log('')
-}
 
 export const backupSrr = (file: string): void => {
     // copy srr to backup folder
     const fileName = path.basename(file);
-    console.log(`Backfill file: ${utils.backfillFolder}/${fileName}`)
-    console.log(`Copy file: ${file}`)
-    if (`${utils.backfillFolder}/${fileName}` !== file) {
-        fs.copyFile(file, `${utils.backfillFolder}/${fileName}`, copyCb);
+    const backfillFile = `${utils.backfillFolder}/${fileName}`;
+
+    if (backfillFile !== file && !fs.existsSync(backfillFile)) {
+
+        fs.copyFile(file, backfillFile, (err) => {
+            if (err) { throw err };
+            console.log('File copied to backfill folder.')
+        });
+
     } else {
-        console.log(`Not copying file ${file} - it is already in backfill folder...`)
+        console.log(`${fileName} - exists already in backfill folder...`)
     }
 };
 
 export const srrUpload = (file: string): boolean => {
     const cookie = process.env.COOKIE;
-    // const url = 'https://www.srrdb.com/release/upload';
-    const url = 'http://localhost/release/upload';
+    const url = 'https://www.srrdb.com/release/upload';
+    // const url = 'http://localhost/release/upload';
     let ret = false;
 
     const fileName = path.basename(file);
@@ -46,7 +45,7 @@ export const srrUpload = (file: string): boolean => {
         axios({
             url,
             method: 'post',
-            // httpsAgent: utils.httpsAgent,
+            httpsAgent: utils.httpsAgent,
             data: form,
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${form.getBoundary()}`,

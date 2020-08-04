@@ -6,13 +6,15 @@ import * as srr from './srr';
 const lockfile = `${utils.backfillFolder}/_srrup.lock`
 
 const checkLockFile = (): boolean|string|void => {
+    let ret;
     fs.stat(lockfile, (err, stats) => {
         if (stats && stats.isFile()) {
-            return stats.mtime;
+            ret = stats.mtime;
         } else {
-            return false;
+            ret = false;
         }
     })
+    return ret;
 }
 
 // create lock file in backfill folder, if none exists
@@ -46,6 +48,7 @@ export const processBackfill = (): void => {
         for (const file of files) {
             console.log(file);
             if (srr.srrUpload(`${utils.backfillFolder}/${file}`)) {
+                // remove file when upload successful
                 fs.unlink(file, (err) => {
                     if (err) { throw err};
                     console.log(`File ${file} deleted from backfill folder.`);
@@ -57,12 +60,6 @@ export const processBackfill = (): void => {
         }
         // when all is done, clear the lock file
         clearLockFile();
-    } else {
-        console.log('Something when wrong with the lockfile..')
     }
 
-
-    // remove file when upload successful
-    // when error stop trying
-    // remove lock file
 }
