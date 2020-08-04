@@ -1,8 +1,8 @@
 {
   "name": "srrup",
-  "version": "1.0.0-beta.4",
+  "version": "2.0.0-beta.1",
   "description": "Upload .srr files to srrdb.com",
-  "homepage": "https://github.com/peps1/srrup",
+  "homepage": "https://github.com/peps1/srrup#readme",
   "license": "MIT",
   "author": {
     "name": "pepsi"
