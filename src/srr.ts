@@ -8,14 +8,16 @@ const { COPYFILE_EXCL } = fs.constants;
 
 const copyCb = (err: any): void => {
     if (err) { throw err };
+    console.log('')
 }
-
 
 export const backupSrr = (file: string): void => {
     // copy srr to backup folder
     const fileName = path.basename(file);
+    console.log(`Backfill file: ${utils.backfillFolder}/${fileName}`)
+    console.log(`Copy file: ${file}`)
     if (`${utils.backfillFolder}/${fileName}` !== file) {
-        fs.copyFile(file, `${utils.backfillFolder}/${fileName}`, COPYFILE_EXCL, copyCb);
+        fs.copyFile(file, `${utils.backfillFolder}/${fileName}`, copyCb);
     } else {
         console.log(`Not copying file ${file} - it is already in backfill folder...`)
     }
@@ -23,8 +25,9 @@ export const backupSrr = (file: string): void => {
 
 export const srrUpload = (file: string): boolean => {
     const cookie = process.env.COOKIE;
-    const url = 'https://www.srrdb.com/release/upload';
-
+    // const url = 'https://www.srrdb.com/release/upload';
+    const url = 'http://localhost/release/upload';
+    let ret = false;
 
     const fileName = path.basename(file);
     let fileData;
@@ -43,7 +46,7 @@ export const srrUpload = (file: string): boolean => {
         axios({
             url,
             method: 'post',
-            httpsAgent: utils.httpsAgent,
+            // httpsAgent: utils.httpsAgent,
             data: form,
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${form.getBoundary()}`,
@@ -52,28 +55,30 @@ export const srrUpload = (file: string): boolean => {
                 'X-Requested-With': 'XMLHttpRequest',
                 Cookie: cookie,
             },
-        })
-            .then(response => {
-                // The request can be successful but the upload can still have failed.
-                if (response.data.files[0].color === 0) {
-                    console.log(`${response.data.files[0].message} when uploading file ${file}`);
-                    backupSrr(file);
-                    return false;
-                } else {
-                    console.log(
-                        `${response.status} ${response.statusText}: Successful uploaded file ${file} - ${response.data.files[0].message}`
-                    );
-                    return true;
-                }
-            })
-            .catch(error => {
-                console.log(
-                    `${error.response.status} ${error.response.statusText}: Error while uploading file ${file}`
-                );
-                console.log(error);
+        }).then(response => {
+            // The request can be successful but the upload can still have failed.
+            if (response.data.files[0].color === 0) {
+                console.log(`${response.data.files[0].message} when uploading file ${file}`);
                 backupSrr(file);
-                return false;
-            });
+                ret = false;
+            } else if (response.data.files[0].color === 1 || response.data.files[0].color === 2) {
+                console.log(
+                    `${response.status} ${response.statusText}: Successful uploaded file ${file} - ${response.data.files[0].message}`
+                );
+                ret = true;
+            } else {
+                // not sure what other errors we could catch here..
+                console.log(`Unknown response: ${response} - please submit a bug report with this output at https://github.com/peps1/srrup/issues`)
+                backupSrr(file);
+                ret = false;
+            }
+        }).catch(error => {
+            console.log(
+                `${error.response?.status || error.code} ${error.response?.statusText || ''}: Error while uploading file ${file}`
+            );
+            backupSrr(file);
+            ret = false;
+        });
     }
-    return true;
+    return ret;
 };

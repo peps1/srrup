@@ -7,7 +7,7 @@ const lockfile = `${utils.backfillFolder}/_srrup.lock`
 
 const checkLockFile = (): boolean|string|void => {
     fs.stat(lockfile, (err, stats) => {
-        if (stats.isFile()) {
+        if (stats && stats.isFile()) {
             return stats.mtime;
         } else {
             return false;
@@ -20,6 +20,7 @@ const setLockFile = (): boolean => {
     const locked = checkLockFile()
     if (!locked) {
         fs.closeSync(fs.openSync(lockfile, 'a'));
+        console.log('Created lockfile.');
         return true;
     } else {
         console.log(`Lockfile already exists.. giving up. ${locked}`);
@@ -39,7 +40,7 @@ export const processBackfill = (): void => {
     const files = fs.readdirSync(utils.backfillFolder)
     console.log(files);
     // log number of files
-    console.log(files.length)
+    if (files.length === 0) { return };
     if (setLockFile()) {
         // upload each file
         for (const file of files) {
