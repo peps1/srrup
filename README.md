@@ -5,12 +5,12 @@
 * Login through the CLI
 * Save and reuse login cookie (~/.config/.env)
 * Better error handling
+* Save failed uploads file to backfill/ folder
+* On every successful upload the backfill folder is checked for files still needing to be uploaded
 
 ## Planned features
 * check that file is really a srr file
 * provide standalone binary
-* Save failed file to backfill/ folder
-* On every successful upload the backfill folder is checked for files still needing to be uploaded
 
 ## Requirements
 * NodeJS >= 10 (https://nodejs.org/en/download/package-manager/)
