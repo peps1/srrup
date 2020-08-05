@@ -19,6 +19,11 @@
 ## Install
 
 `npm i -g srrup`
+
+## Upgrade
+
+`npm update -g srrup`
+
 ## Usage
 
 `srrup --help`
