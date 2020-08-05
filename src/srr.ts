@@ -22,7 +22,7 @@ export const backupSrr = (file: string): void => {
     }
 };
 
-export const srrUpload = (file: string): boolean => {
+export const srrUpload = async (file: string): Promise<boolean> => {
     const cookie = process.env.COOKIE;
     const url = 'https://www.srrdb.com/release/upload';
     // const url = 'http://localhost/release/upload';
@@ -41,8 +41,8 @@ export const srrUpload = (file: string): boolean => {
         const form = new FormData();
         form.append('files[]', fileData, fileName);
 
-        console.log(`Uploading file: ${file}`)
-        axios({
+        // console.log(`Uploading file: ${file}`)
+        await axios({
             url,
             method: 'post',
             httpsAgent: utils.httpsAgent,
@@ -62,7 +62,7 @@ export const srrUpload = (file: string): boolean => {
                 ret = false;
             } else if (response.data.files[0].color === 1 || response.data.files[0].color === 2) {
                 console.log(
-                    `${response.status} ${response.statusText}: Successful uploaded file ${file} - ${response.data.files[0].message}`
+                    `${response.status} ${response.statusText}: Successfully uploaded file ${file} (${response.data.files[0].message})`
                 );
                 ret = true;
             } else {

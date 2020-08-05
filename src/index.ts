@@ -83,13 +83,14 @@ const args = minimist(process.argv.slice(2), {
         let lastUploadSuccessful = false;
 
         // Call srrUpload for each file
-        args._.forEach((file: string) => {
-            if (srr.srrUpload(file)) {
+        for (const file of args._) {
+            const uploaded = await srr.srrUpload(file)
+            if (uploaded) {
                 lastUploadSuccessful = true;
             } else {
                 lastUploadSuccessful = false;
             }
-        });
+        }
 
         // if the most recent file upload succeeded, take a look in backfill folder and process them
         if (lastUploadSuccessful){
