@@ -13,8 +13,8 @@
 * provide standalone binary
 
 ## Requirements
-* NodeJS >= 10 (https://nodejs.org/en/download/package-manager/)
-* npm (https://www.npmjs.com/get-npm)
+* NodeJS >= 10 [https://nodejs.org/en/download/package-manager/](https://nodejs.org/en/download/package-manager/)
+* npm [https://www.npmjs.com/get-npm](https://www.npmjs.com/get-npm)
 
 ## Install
 
