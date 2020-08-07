@@ -2,7 +2,6 @@ import fs from 'fs';
 import os from 'os';
 import { Agent } from 'https';
 import { version as ver } from './version';
-import { createLogger, format, transports } from 'winston';
 
 export const configFolder = `${os.homedir()}/.config/srrdb`;
 export const backfillFolder = `${os.homedir()}/.config/srrdb/backfill`;
@@ -22,31 +21,6 @@ Options:
     -h, --help      show this help
     -v, --version   print the current version
 `;
-
-export const logger = createLogger({
-    level: process.env.DEBUG || 'info',
-    format: format.combine(
-        format.timestamp(),
-        format.simple(),
-        format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
-    ),
-    transports: [
-        //
-        // - Write all logs with level `error` and below to `error.log`
-        // - Write all logs with level `info` and below to `combined.log`
-        //
-        new transports.File({ filename: `${logFolder}/error.log`, level: 'error' }),
-        new transports.File({ filename: `${logFolder}/combined.log` }),
-        new transports.Console({
-            format: format.combine(
-                format.timestamp(),
-                format.colorize(),
-                format.simple(),
-                format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
-            )
-        })
-    ],
-});
 
 export const fileSizeOk = (file: string): boolean => {
     const stats = fs.statSync(file);

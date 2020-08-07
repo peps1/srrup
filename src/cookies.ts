@@ -4,8 +4,8 @@ import promptSync from 'prompt-sync';
 import qs from 'qs';
 
 import * as utils from './utils';
+import logger from './logger';
 
-const logger = utils.logger;
 const prompt = promptSync();
 
 export const testLoginCookie = async (): Promise<boolean> => {

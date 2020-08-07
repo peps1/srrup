@@ -3,8 +3,8 @@ import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import * as utils from './utils';
+import logger from './logger';
 
-const logger = utils.logger;
 
 export const backupSrr = (file: string): void => {
     // copy srr to backup folder

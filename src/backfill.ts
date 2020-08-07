@@ -2,11 +2,11 @@ import fs from 'fs';
 
 import * as utils from './utils';
 import * as srr from './srr';
+import logger from './logger';
 
 const fsPromises = fs.promises
 
 const lockfile = `${utils.backfillFolder}/_srrup.lock`
-const logger = utils.logger;
 
 const checkLockFile = async (): Promise<boolean|Date|void> => {
     let ret;
