@@ -42,7 +42,7 @@ export const srrUpload = async (file: string): Promise<boolean> => {
         const form = new FormData();
         form.append('files[]', fileData, fileName);
 
-        // console.log(`Uploading file: ${file}`)
+        logger.debug(`Uploading file: ${file}`)
         await axios({
             url,
             method: 'post',
@@ -63,9 +63,8 @@ export const srrUpload = async (file: string): Promise<boolean> => {
                 backupSrr(file);
                 ret = false;
             } else if (response.data.files[0].color === 1 || response.data.files[0].color === 2) {
-                logger.info(
-                    `Uploaded ${file} (${response.data.files[0].message})`
-                );
+                logger.info(`Uploaded ${file}`);
+                logger.info(`Response: ${response.data.files[0].message.trim().replace(/^\- /, '')}`);
                 ret = true;
             } else {
                 // not sure what other errors we could catch here..
