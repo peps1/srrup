@@ -1,5 +1,8 @@
 # Changelog
 
+## [v2.1.0](https://github.com/peps1/srrup/tree/v2.1.0-beta.1) (2020-08-06)
+[Full git log](https://github.com/peps1/srrup/compare/v2.0.0-beta.1...v2.1.0-beta.1)
+
 ## [v2.0.0](https://github.com/peps1/srrup/tree/v2.0.0-beta.1) (2020-08-04)
 [Full git log](https://github.com/peps1/srrup/compare/v1.0.0-beta.4...v2.0.0-beta.1)
 

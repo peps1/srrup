@@ -11,7 +11,6 @@ import * as cookies from './cookies';
 import * as srr from './srr';
 import * as backfill from './backfill';
 
-
 const args = minimist(process.argv.slice(2), {
 
     // All options / switches
@@ -40,6 +39,7 @@ const args = minimist(process.argv.slice(2), {
     // Ensure config and backfill folder are created
     utils.setFolder(utils.configFolder)
     utils.setFolder(utils.backfillFolder);
+    utils.setFolder(utils.logFolder);
 
     // -h | --help command
     if (args.help) {

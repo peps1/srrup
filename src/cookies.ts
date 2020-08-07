@@ -5,6 +5,7 @@ import qs from 'qs';
 
 import * as utils from './utils';
 
+const logger = utils.logger;
 const prompt = promptSync();
 
 export const testLoginCookie = async (): Promise<boolean> => {
@@ -131,21 +132,21 @@ export const getLoginCookie = async (): Promise<any> => {
             });
 
             if (authCookie.length !== 3) {
-                console.error('Couldn\'t get all necessary headers, try again.');
-                console.debug(response.headers['set-cookie']);
-                console.debug(authCookie);
+                logger.error('Couldn\'t get all necessary headers, try again.');
+                logger.debug(response.headers['set-cookie']);
+                logger.debug(authCookie);
                 process.exit(1);
             } else {
                 // transform to cookie format: "uid=uid_here; hash=hash_here; srrdb_session=session_hash_here"
                 fs.writeFileSync(`${utils.configFolder}/.env`, `COOKIE="${authCookie.join(' ')}"\n`);
-                console.log(
-                    `Writing login Cookie to file ".env". COOKIE=${authCookie.join(' ')}`
+                logger.info(
+                    `Writing login Cookie to file ".env". COOKIE="${authCookie.join(' ')}"`
                 );
             }
             // write cookie to .env file
         })
         .catch((error) => {
-            console.log(`${error.status} ${error.statusText} - ${error.data}`);
-            console.log(error.headers);
+            logger.error(`${error.status} ${error.statusText} - ${error.data}`);
+            logger.error(error.headers);
         });
 };

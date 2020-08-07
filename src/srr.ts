@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import * as utils from './utils';
 
+const logger = utils.logger;
 
 export const backupSrr = (file: string): void => {
     // copy srr to backup folder
@@ -14,11 +15,11 @@ export const backupSrr = (file: string): void => {
 
         fs.copyFile(file, backfillFile, (err) => {
             if (err) { throw err };
-            console.log('File copied to backfill folder.')
+            logger.debug(`${fileName} copied to backfill folder.`)
         });
 
     } else {
-        console.log(`${fileName} - exists already in backfill folder...`)
+        logger.debug(`${fileName} exists already in backfill folder.`)
     }
 };
 
@@ -33,7 +34,7 @@ export const srrUpload = async (file: string): Promise<boolean> => {
     try {
         fileData = fs.readFileSync(file);
     } catch (e) {
-        console.log(e);
+        logger.error(e);
         return false;
     }
 
@@ -57,22 +58,23 @@ export const srrUpload = async (file: string): Promise<boolean> => {
         }).then(response => {
             // The request can be successful but the upload can still have failed.
             if (response.data.files[0].color === 0) {
-                console.log(`${response.data.files[0].message} when uploading file ${file}`);
+                logger.error(`${response.data.files[0].message} when uploading file ${file}`);
+                logger.debug(response);
                 backupSrr(file);
                 ret = false;
             } else if (response.data.files[0].color === 1 || response.data.files[0].color === 2) {
-                console.log(
-                    `${response.status} ${response.statusText}: Successfully uploaded file ${file} (${response.data.files[0].message})`
+                logger.info(
+                    `Uploaded ${file} (${response.data.files[0].message})`
                 );
                 ret = true;
             } else {
                 // not sure what other errors we could catch here..
-                console.log(`Unknown response: ${response} - please submit a bug report with this output at https://github.com/peps1/srrup/issues`)
+                logger.error(`Unknown response: ${response} - please submit a bug report with this output at https://github.com/peps1/srrup/issues`)
                 backupSrr(file);
                 ret = false;
             }
         }).catch(error => {
-            console.log(
+            logger.error(
                 `${error.response?.status || error.code} ${error.response?.statusText || ''}: Error while uploading file ${file}`
             );
             backupSrr(file);
