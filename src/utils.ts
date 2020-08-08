@@ -8,6 +8,7 @@ export const backfillFolder = `${os.homedir()}/.config/srrdb/backfill`;
 export const logFolder = `${os.homedir()}/.config/srrdb/logs`;
 
 export const version = ver;
+export const MAX_UPLOAD_SIZE = 104857600;
 
 export const printHelpText = `Usage: srrup file.srr <file2.srr> <file3.srr>
 Upload one or more .srr files to srrdb.com, if no option is specified as listed below,
@@ -22,9 +23,10 @@ Options:
     -v, --version   print the current version
 `;
 
+// srrDB file max upload size is 100MiB
 export const fileSizeOk = (file: string): boolean => {
     const stats = fs.statSync(file);
-    if (stats.size >= 52428800 || stats.size === 0) {
+    if (stats.size >= MAX_UPLOAD_SIZE + 1 || stats.size === 0) {
         return false;
     } else {
         return true;

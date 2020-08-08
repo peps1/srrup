@@ -48,6 +48,7 @@ export const srrUpload = async (file: string): Promise<boolean> => {
             method: 'post',
             httpsAgent: utils.httpsAgent,
             data: form,
+            maxContentLength: utils.MAX_UPLOAD_SIZE,
             headers: {
                 'Content-Type': `multipart/form-data; boundary=${form.getBoundary()}`,
                 'Content-Length': form.getLengthSync(),
