@@ -13,12 +13,13 @@ export const MAX_UPLOAD_SIZE = 104857600;
 export const printHelpText = `Usage: srrup file.srr <file2.srr> <file3.srr>
 Upload one or more .srr files to srrdb.com, if no option is specified as listed below,
 all parameters are expected to be .srr files and will be uploaded.
+Output will be logged to ~/.config/srrdb/logs
 
 Example:
     srrup files/file1.srr more/file2.srr
 Options:
-    -l, --login     login to srrdb.com and save auth info
-    -b, --backfill  process files in backfill folder
+    -l, --login     login to srrdb.com and save auth info (~/.config/srrdb/.env)
+    -b, --backfill  process files in backfill folder (~/.config/srrdb/backfill)
     -h, --help      show this help
     -v, --version   print the current version
 `;
