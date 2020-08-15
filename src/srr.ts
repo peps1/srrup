@@ -57,11 +57,21 @@ export const srrUpload = async (file: string): Promise<boolean> => {
                 Cookie: cookie,
             },
         }).then(response => {
+            logger.debug(response);
+
+            let message;
+            if (response.data.files[0].message) {
+                message = response.data.files[0].message.trim();
+            }
+
             // The request can be successful but the upload can still have failed.
             if (response.data.files[0].color === 0) {
-                logger.error(`${response.data.files[0].message} when uploading file ${file}`);
-                logger.debug(response);
-                backupSrr(file);
+                logger.error(`${message} when uploading file ${file}`);
+
+                if (!message.match(/.+ is a different set of rars\.$/i)) {
+                    backupSrr(file);
+                }
+
                 ret = false;
             } else if (response.data.files[0].color === 1 || response.data.files[0].color === 2) {
                 logger.info(`Uploaded ${file}`);
