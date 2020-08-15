@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2.1.0](https://github.com/peps1/srrup/tree/v2.1.1) (2020-08-15)
+[Full git log](https://github.com/peps1/srrup/compare/v2.1.0...v2.1.1)
+
+### Fixed
+* don't backup srr file when srrdb response includes 'is a different set of rars'
+
 ## [v2.1.0](https://github.com/peps1/srrup/tree/v2.1.0) (2020-08-08)
 [Full git log](https://github.com/peps1/srrup/compare/v2.0.0-beta.1...v2.1.0)
 
