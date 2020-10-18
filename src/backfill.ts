@@ -47,9 +47,11 @@ export const processBackfill = async (): Promise<void> => {
     // list all files in backfill
     const files = fs.readdirSync(utils.backfillFolder)
     logger.debug(`Backfill content: ${files}`);
+
+    // Do nothing, when there's no files
     if (files.length === 0) { return };
 
-    logger.info('Files found in backfill folder, will process now...');
+    logger.info(`${files.length} file[s] found in backfill folder, will process now...`);
     const lockedSuccessful = await setLockFile();
     if (lockedSuccessful) {
         // upload each file
