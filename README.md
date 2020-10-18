@@ -17,8 +17,8 @@ Works on Linux/MacOS/Windows!
 
 ## Requirements
 * Linux, MacOS or Windows
-* NodeJS >= 10 [https://nodejs.org/en/download/package-manager/](https://nodejs.org/en/download/package-manager/)
-* npm [https://www.npmjs.com/get-npm](https://www.npmjs.com/get-npm)
+* NodeJS >= 10
+* npm (Should come with NodeJS on most OS)
 
 ## Install NodeJS and npm
 
