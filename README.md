@@ -1,4 +1,4 @@
-# srrDB CLI Uploader [![GitHub Actions][build-badge]][build] [![npm package][npm-badge]][npm] [![npm downloads][npm-dl-badge]][npm] [![codecov][coverage-badge]][coverage]
+# srrDB CLI Uploader [![GitHub Actions][build-badge]][build] [![npm package][npm-badge]][npm] [![npm downloads][npm-dl-badge]][npm] [![snyk][snyk-badge]][snyk] [![codecov][coverage-badge]][coverage] [![codeclimate][codeclimate-badge]][codeclimate]
 
 Works on Linux/MacOS/Windows!
 
@@ -84,3 +84,9 @@ You can enable debugging output using DEBUG environment variable
 
 [coverage-badge]: https://codecov.io/gh/peps1/srrup/branch/master/graph/badge.svg
 [coverage]: https://codecov.io/gh/peps1/srrup
+
+[codeclimate-badge]: https://api.codeclimate.com/v1/badges/76aa2bec4ed3c08ba903/maintainability
+[codeclimate]: https://codeclimate.com/github/peps1/srrup/maintainability
+
+[snyk-badge]: https://snyk.io/test/github/peps1/srrup/badge.svg
+[snyk]: https://snyk.io/test/github/peps1/srrup
