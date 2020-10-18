@@ -1,13 +1,14 @@
 # srrDB Uploader ![build](https://github.com/peps1/srrup/workflows/build/badge.svg)
 
+
 ## Features
 
 * Login through the CLI
-* Save and reuse login cookie (~/.config/srrdb/.env)
+* Save and reuse login cookie (Linux/MacOS: `~/.config/srrdb/.env` or Windows: `%HOMEPATH%\.config\srrdb\.env`)
 * Better error handling
-* Save failed uploads file to backfill folder (~/.config/srrdb/backfill)
+* Save failed uploads file to backfill folder (Linux/MacOS: `~/.config/srrdb/backfill` or Windows: `%HOMEPATH%\.config\srrdb\backfill`)
 * On every successful upload the backfill folder is checked for files still needing to be uploaded
-* logging (~/.config/srrdb/logs)
+* logging (Linux/MacOS: `~/.config/srrdb/logs` or Windows: `%HOMEPATH%\.config\srrdb\logs`)
 
 ## Planned features
 * check that file is really a srr file
