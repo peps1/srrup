@@ -1,5 +1,6 @@
 # srrDB Uploader ![build](https://github.com/peps1/srrup/workflows/build/badge.svg)
 
+Works on Linux/MacOS/Windows!
 
 ## Features
 
@@ -15,6 +16,7 @@
 * provide standalone binary
 
 ## Requirements
+* Linux, MacOS or Windows
 * NodeJS >= 10 [https://nodejs.org/en/download/package-manager/](https://nodejs.org/en/download/package-manager/)
 * npm [https://www.npmjs.com/get-npm](https://www.npmjs.com/get-npm)
 
