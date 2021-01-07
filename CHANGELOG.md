@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2.1.2](https://github.com/peps1/srrup/tree/v2.1.2) (2021-01-07)
+[Full git log](https://github.com/peps1/srrup/compare/v2.1.1...v2.1.2)
+
+### Changed
+* update dependencies
+
 ## [v2.1.1](https://github.com/peps1/srrup/tree/v2.1.1) (2020-08-15)
 [Full git log](https://github.com/peps1/srrup/compare/v2.1.0...v2.1.1)
 
