@@ -1,6 +1,6 @@
 {
   "name": "srrup",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "Upload .srr files to srrdb.com",
   "homepage": "https://github.com/peps1/srrup#readme",
   "license": "MIT",

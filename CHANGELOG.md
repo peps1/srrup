@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2.1.3](https://github.com/peps1/srrup/tree/v2.1.3) (2021-01-10)
+[Full git log](https://github.com/peps1/srrup/compare/v2.1.2...v2.1.3)
+
+### Changed
+* Fix ERR_FR_MAX_BODY_LENGTH_EXCEEDED error that appeared since updating axios
+
 ## [v2.1.2](https://github.com/peps1/srrup/tree/v2.1.2) (2021-01-07)
 [Full git log](https://github.com/peps1/srrup/compare/v2.1.1...v2.1.2)
 
