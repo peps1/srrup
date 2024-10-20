@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "npx tsc",
     "build": "genversion --es6 --semi src/version.ts && ncc build -o build",
-    "test": "nyc mocha -r ts-node/register src/tests/*.ts",
+    "test": "deno test --allow-env --allow-read --allow-sys --coverage --trace-leaks src/",
     "lint": "npx eslint ./src ; deno lint ./src",
     "lint:fix": "npx eslint ./src --fix ; deno lint ./src --fix",
     "prepublishOnly": "npm run build"
