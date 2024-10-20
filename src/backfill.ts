@@ -33,7 +33,7 @@ const setLockFile = async (): Promise<boolean> => {
         logger.debug('Created lockfile.');
         return true;
     } else {
-        logger.info(`Lockfile found, cancelling backfill. Locked since ${locked}.`);
+        logger.info(`Lockfile found, cancelling backfill. Locked since ${locked.toString()}.`);
         return false;
     }
 }
@@ -46,7 +46,7 @@ const clearLockFile = async (): Promise<void> => {
 export const processBackfill = async (): Promise<void> => {
     // list all files in backfill
     const files = fs.readdirSync(utils.backfillFolder)
-    logger.debug(`Backfill content: ${files}`);
+    logger.debug(`Backfill content: ${files.toString()}`);
 
     // Do nothing, when there's no files
     if (files.length === 0) { return };
