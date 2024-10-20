@@ -1,7 +1,7 @@
-import fs from 'fs';
-import os from 'os';
-import { Agent } from 'https';
-import { version as ver } from './version';
+import fs from "node:fs";
+import os from "node:os";
+import { Agent } from "node:https";
+import { version as ver } from "./version.ts";
 
 export const configFolder = `${os.homedir()}/.config/srrdb`;
 export const backfillFolder = `${os.homedir()}/.config/srrdb/backfill`;
@@ -26,36 +26,36 @@ Options:
 
 // srrDB file max upload size is 100MiB
 export const fileSizeOk = (file: string): boolean => {
-    const stats = fs.statSync(file);
-    if (stats.size >= MAX_UPLOAD_SIZE + 1 || stats.size === 0) {
-        return false;
-    } else {
-        return true;
-    }
+  const stats = fs.statSync(file);
+  if (stats.size >= MAX_UPLOAD_SIZE + 1 || stats.size === 0) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 export const httpsAgent = new Agent({ keepAlive: true });
 
 export const setFolder = (folder: string): boolean => {
-    if (!fs.existsSync(folder)) {
-        if (fs.mkdirSync(folder, { recursive: true })) {
-            return true;
-        } else {
-            return false;
-        }
+  if (!fs.existsSync(folder)) {
+    if (fs.mkdirSync(folder, { recursive: true })) {
+      return true;
     } else {
-        return false;
+      return false;
     }
+  } else {
+    return false;
+  }
 };
 
 export const extractUid = (cookie: string): number => {
-    const c = cookie.split(' ');
-    let ret = 0;
-    c.forEach((k) => {
-        if (k.startsWith('uid=')) {
-            ret = Number(k.split('=')[1].slice(0, -1));
-        }
-    });
+  const c = cookie.split(" ");
+  let ret = 0;
+  c.forEach((k) => {
+    if (k.startsWith("uid=")) {
+      ret = Number(k.split("=")[1].slice(0, -1));
+    }
+  });
 
-    return ret;
+  return ret;
 };

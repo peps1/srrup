@@ -75,6 +75,16 @@ You can enable debugging output using DEBUG environment variable
 `DEBUG=debug srrup files/file1.srr more/file2.srr`
 
 
+## Development
+
+
+### Run from source
+```
+deno run -A src/index.ts
+
+```
+
+
 [build-badge]: https://github.com/peps1/srrup/workflows/build/badge.svg
 [build]: https://github.com/peps1/srrup/actions
 

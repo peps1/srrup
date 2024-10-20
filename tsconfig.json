@@ -9,6 +9,11 @@
     "jsx": "react",
     "lib": [],
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
   }
 }
