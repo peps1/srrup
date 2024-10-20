@@ -51,7 +51,7 @@ jobs:
 
     strategy:
       matrix:
-        compile-targets: [{ "target": "x86_64-unknown-linux-gnu", "dir": "linux-x86_64"}, { "target": "aarch64-unknown-linux-gnu", "dir": "linux-aarch64"}, { "target": "x86_64-pc-windows-msvc", "dir": "windows-x86_64"}, { "target": "x86_64-apple-darwin", "dir": "macos-x86_64"}, { "target": "aaarch64-apple-darwin", "dir": "macos-aaarch64" } ]
+        compile-targets: [{ "target": "x86_64-unknown-linux-gnu", "dir": "linux-x86_64"}, { "target": "aarch64-unknown-linux-gnu", "dir": "linux-aarch64"}, { "target": "x86_64-pc-windows-msvc", "dir": "windows-x86_64"}, { "target": "x86_64-apple-darwin", "dir": "macos-x86_64"}, { "target": "aarch64-apple-darwin", "dir": "macos-aarch64" } ]
 
     steps:
       - name: Checkout
