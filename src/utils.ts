@@ -36,6 +36,7 @@ export const fileSizeOk = (file: string): boolean => {
 
 export const httpsAgent = new Agent({ keepAlive: true });
 
+// create folder if it doesn't exist
 export const setFolder = (folder: string): boolean => {
   if (!fs.existsSync(folder)) {
     if (fs.mkdirSync(folder, { recursive: true })) {
@@ -48,6 +49,7 @@ export const setFolder = (folder: string): boolean => {
   }
 };
 
+// extract uid from cookie
 export const extractUid = (cookie: string): number => {
   const c = cookie.split(" ");
   let ret = 0;
