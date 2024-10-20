@@ -50,7 +50,7 @@ export const testLoginCookie = async (): Promise<boolean> => {
                     console.log('Current login cookie is invalid.');
                     ret = false;
                 } else {
-                    console.log(`Unknown error: ${error}`);
+                    console.log(`Unknown error: ${JSON.stringify(error)}`);
                     process.exit(1);
                 }
             });

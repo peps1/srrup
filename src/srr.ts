@@ -14,7 +14,7 @@ export const backupSrr = (file: string): void => {
     if (backfillFile !== file && !fs.existsSync(backfillFile)) {
 
         fs.copyFile(file, backfillFile, (err) => {
-            if (err) { throw err };
+            if (err) { throw err }
             logger.debug(`${fileName} copied to backfill folder.`)
         });
 
@@ -58,7 +58,7 @@ export const srrUpload = async (file: string): Promise<boolean> => {
                 Cookie: cookie,
             },
         }).then(response => {
-            logger.debug(response);
+            logger.debug(JSON.stringify(response));
 
             let message;
             if (response.data.files[0].message) {
@@ -85,6 +85,7 @@ export const srrUpload = async (file: string): Promise<boolean> => {
                 ret = false;
             }
         }).catch(error => {
+            logger.debug(`Response: ${JSON.stringify(error)}`);
             logger.error(
                 `${error.response?.status || error.code} ${error.response?.statusText || ''}: Error while uploading file ${file}`
             );
