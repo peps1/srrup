@@ -5,6 +5,8 @@ on:
     paths:
       - "src/**"
       - "*.json"
+      - ".github/**"
+  workflow_dispatch:
 
 jobs:
 
