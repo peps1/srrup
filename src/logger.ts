@@ -9,12 +9,12 @@ const srrupLogFormat = printf(({ level, message, timestamp }) => {
   return `${timestamp} ${level}: ${message}`;
 });
 
-const logger = createLogger({
+export const logger = createLogger({
   level: process.env.DEBUG || "info",
   format: combine(
     timestamp(),
     simple(),
-    srrupLogFormat
+    srrupLogFormat,
   ),
   transports: [
     //
@@ -42,6 +42,28 @@ const logger = createLogger({
         format.simple(),
         format.printf((info) =>
           `${info.timestamp} ${info.level}: ${info.message}`
+        ),
+      ),
+    }),
+  ],
+});
+
+export const debugLogger = createLogger({
+  level: process.env.DEBUG || "info",
+  format: combine(
+    timestamp(),
+    simple(),
+    srrupLogFormat,
+  ),
+  transports: [
+    new transports.Console({
+      format: format.combine(
+        format.timestamp(),
+        format.colorize(),
+        format.simple(),
+        format.prettyPrint({ colorize: true, depth: 4 }),
+        format.printf((debug) =>
+          `${debug.timestamp} ${debug.level}: ${debug.message}`
         ),
       ),
     }),

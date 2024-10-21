@@ -3,7 +3,7 @@ import axios from "axios";
 import fs from "node:fs";
 import path from "node:path";
 import * as utils from "./utils.ts";
-import logger from "./logger.ts";
+import { debugLogger, logger } from "./logger.ts";
 import process from "node:process";
 
 export const backupSrr = (file: string): void => {
@@ -14,10 +14,10 @@ export const backupSrr = (file: string): void => {
   if (backfillFile !== file && !fs.existsSync(backfillFile)) {
     fs.copyFile(file, backfillFile, (err) => {
       if (err) throw err;
-      logger.debug(`${fileName} copied to backfill folder.`);
+      debugLogger.debug(`${fileName} copied to backfill folder.`);
     });
   } else {
-    logger.debug(`${fileName} exists already in backfill folder.`);
+    debugLogger.debug(`${fileName} exists already in backfill folder.`);
   }
 };
 
@@ -40,7 +40,8 @@ export const srrUpload = async (file: string): Promise<boolean> => {
     const form = new FormData();
     form.append("files[]", fileData, fileName);
 
-    logger.debug(`Uploading file: ${file}`);
+    debugLogger.debug(`Uploading file: ${file}`);
+
     await axios({
       url,
       method: "post",
@@ -48,15 +49,31 @@ export const srrUpload = async (file: string): Promise<boolean> => {
       data: form,
       maxContentLength: utils.MAX_UPLOAD_SIZE,
       maxBodyLength: utils.MAX_UPLOAD_SIZE,
+      timeout: 60000,
       headers: {
-        "Content-Type": `multipart/form-data; boundary=${form.getBoundary()}`,
-        "Content-Length": form.getLengthSync(),
         "User-Agent": `srrup.js/${utils.version}`,
         "X-Requested-With": "XMLHttpRequest",
         Cookie: cookie,
       },
     }).then((response) => {
-      logger.debug(JSON.stringify(response));
+      if (response) {
+        debugLogger.debug(
+          `Response: ${response?.status.toString()} - ${response?.statusText}`,
+        );
+        debugLogger.debug(`-------- Response Headers --------`);
+        debugLogger.debug(response?.headers);
+        debugLogger.debug(`-------- Request Config --------`);
+        debugLogger.debug(
+          JSON.stringify(
+            response.config,
+            Object.getOwnPropertyNames(response.config),
+            4,
+          ),
+        );
+
+        // Enable for better debugging
+        // console.log(response);
+      }
 
       let message;
       if (response.data.files[0].message) {
@@ -65,7 +82,9 @@ export const srrUpload = async (file: string): Promise<boolean> => {
 
       // The request can be successful but the upload can still have failed.
       if (response.data.files[0].color === 0) {
-        logger.error(`${message} when uploading file ${file}`);
+        logger.error(
+          `Response: "${message}" from server when uploading file ${file}`,
+        );
 
         if (!message.match(/.+ is a different set of rars\.$/i)) {
           backupSrr(file);
@@ -85,13 +104,30 @@ export const srrUpload = async (file: string): Promise<boolean> => {
       } else {
         // not sure what other errors we could catch here..
         logger.error(
-          `Unknown response: ${response} - please submit a bug report with this output at https://github.com/peps1/srrup/issues`,
+          `Unknown response: please submit a bug report with this output at https://github.com/peps1/srrup/issues`,
+        );
+        logger.error(
+          `\n-----> Response: \n${
+            JSON.stringify(response, Object.getOwnPropertyNames(response), 4)
+          }\n-----> Headers: \n${
+            JSON.stringify(
+              response?.headers,
+              null,
+              4,
+            )
+          }\n-----> Data: \n${
+            JSON.stringify(
+              response?.data,
+              null,
+              4,
+            )
+          }`,
         );
         backupSrr(file);
         ret = false;
       }
     }).catch((error) => {
-      logger.debug(`Response: ${JSON.stringify(error)}`);
+      debugLogger.debug(error);
       logger.error(
         `${error.response?.status || error.code} ${
           error.response?.statusText || ""

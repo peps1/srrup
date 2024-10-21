@@ -2,7 +2,7 @@ import fs from "node:fs";
 
 import * as utils from "./utils.ts";
 import * as srr from "./srr.ts";
-import logger from "./logger.ts";
+import { debugLogger, logger } from "./logger.ts";
 
 const fsPromises = fs.promises;
 
@@ -29,7 +29,7 @@ const setLockFile = async (): Promise<boolean> => {
   const locked = await checkLockFile();
   if (!locked) {
     fs.closeSync(fs.openSync(lockfile, "a"));
-    logger.debug("Created lockfile.");
+    debugLogger.debug("Created lockfile.");
     return true;
   } else {
     logger.info(
@@ -41,13 +41,13 @@ const setLockFile = async (): Promise<boolean> => {
 
 const clearLockFile = async (): Promise<void> => {
   await fsPromises.unlink(lockfile);
-  logger.debug("Lockfile cleared.");
+  debugLogger.debug("Lockfile cleared.");
 };
 
 export const processBackfill = async (): Promise<void> => {
   // list all files in backfill
   const files = fs.readdirSync(utils.backfillFolder);
-  logger.debug(`Backfill content: ${files.toString()}`);
+  debugLogger.debug(`Backfill content: ${files.toString()}`);
 
   // Do nothing, when there's no files
   if (files.length === 0) return;
@@ -65,7 +65,7 @@ export const processBackfill = async (): Promise<void> => {
         // remove file when upload successful
         fs.unlink(filePath, (err) => {
           if (err) console.log(err);
-          logger.debug(`File ${file} deleted from backfill folder.`);
+          debugLogger.debug(`File ${file} deleted from backfill folder.`);
         });
       } else {
         // If upload fails during backfill processing, stop the processing

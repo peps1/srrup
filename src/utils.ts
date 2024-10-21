@@ -34,7 +34,9 @@ export const fileSizeOk = (file: string): boolean => {
   }
 };
 
-export const httpsAgent = new Agent({ keepAlive: true });
+export const httpsAgent = new Agent({
+  keepAlive: true,
+});
 
 // create folder if it doesn't exist
 export const setFolder = (folder: string): boolean => {

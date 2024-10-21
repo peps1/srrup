@@ -1,10 +1,10 @@
 import axios from "axios";
 import fs from "node:fs";
-import { input, password as passInput } from '@inquirer/prompts';
+import { input, password as passInput } from "@inquirer/prompts";
 import qs from "qs";
 
 import * as utils from "./utils.ts";
-import logger from "./logger.ts";
+import { debugLogger, logger } from "./logger.ts";
 import process from "node:process";
 
 export const testLoginCookie = async (): Promise<boolean> => {
@@ -67,8 +67,10 @@ export const checkLoginCookie = async (): Promise<boolean> => {
   }
   const validCookie = await testLoginCookie();
   if (validCookie) {
-    overwriteCookie = await input({message: "Do you want to overwrite the existing cookie? (y/n)", default: "n",}
-    );
+    overwriteCookie = await input({
+      message: "Do you want to overwrite the existing cookie? (y/n)",
+      default: "n",
+    });
     if (overwriteCookie === "y") {
       return false;
     } else {
@@ -82,8 +84,8 @@ export const checkLoginCookie = async (): Promise<boolean> => {
 };
 
 export const getLoginCookie = async (): Promise<undefined> => {
-  const username = await input({ message: 'Username' });
-  const password = await passInput({ message: 'Password' });
+  const username = await input({ message: "Username" });
+  const password = await passInput({ message: "Password" });
 
   console.log();
   if (username === "" || password === "" || !username || !password) {
@@ -130,15 +132,15 @@ export const getLoginCookie = async (): Promise<undefined> => {
 
       if (authCookie.length !== 3) {
         logger.error("Couldn't get all necessary headers, try again.");
-        logger.debug(response.headers["set-cookie"]);
-        logger.debug(authCookie);
+        debugLogger.debug(response.headers["set-cookie"]);
+        debugLogger.debug(authCookie);
         process.exit(1);
       } else {
         // transform to cookie format: "uid=uid_here; hash=hash_here; srrdb_session=session_hash_here"
         fs.writeFileSync(
           `${utils.configFolder}/.env`,
           `COOKIE="${authCookie.join(" ")}"\n`,
-          { flag: "rs+" }
+          { flag: "rs+" },
         );
         logger.info(
           `Writing login Cookie to file ".env". COOKIE="${
