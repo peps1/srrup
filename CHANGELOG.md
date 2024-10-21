@@ -1,13 +1,18 @@
 # Changelog
 
-## [v3.0.0](https://github.com/peps1/srrup/tree/v3.0.0) (2021-01-10)
+## [v3.0.0](https://github.com/peps1/srrup/tree/v3.0.0) (2024-10-20)
 
 [Full git log](https://github.com/peps1/srrup/compare/v2.1.3...v3.0.0)
 
 ### Added
 
-- switching to Deno 2 (https://deno.com/blog/v2.0)
--
+- Switching to Deno 2 (https://deno.com/blog/v2.0)
+
+### Changed
+- Added new debug logger for improved logging
+
+### Fixed
+- Fixed logging which caused errors
 
 ## [v2.1.3](https://github.com/peps1/srrup/tree/v2.1.3) (2021-01-10)
 
