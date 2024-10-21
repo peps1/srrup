@@ -31,12 +31,21 @@ jobs:
           deno-version: v2.x
       - run: deno install
       - run: deno test --allow-env --allow-read --allow-sys --coverage --trace-leaks src/
+      - run: deno coverage --lcov ./coverage > coverage.lcov
       - run: deno compile --allow-env --allow-read --allow-write --allow-sys --allow-net --target ${{ matrix.compile-targets.target }} -o bin/srrup-${{ matrix.compile-targets.platform }} src/index.ts
       - uses: actions/upload-artifact@v4
         with:
           name: srrup-${{ matrix.compile-targets.platform }}
           path: bin/srrup*
           retention-days: 7
+      - uses: codecov/codecov-action@v4
+        with:
+          files: coverage.lcov
+          flags: unittests
+          name: codecov-umbrella
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   release-github:
     needs: build-deno
