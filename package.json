@@ -1,6 +1,6 @@
 {
   "name": "srrup",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "description": "Upload .srr files to srrdb.com",
   "homepage": "https://github.com/peps1/srrup#readme",
   "license": "MIT",
@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "fmt": "deno fmt src/",
+    "update-version": "genversion --es6 --semi src/version.ts",
     "test": "deno test --allow-env --allow-read --allow-sys --coverage --trace-leaks src/",
     "compile:windows": "deno compile -A --target x86_64-pc-windows-msvc -o bin/windows-x86_64/srrup src/index.ts",
     "compile:linux": "deno compile -A --target x86_64-unknown-linux-gnu -o bin/linux-x86_64/srrup src/index.ts; deno compile -A --target aarch64-unknown-linux-gnu -o bin/linux-aarch64/srrup src/index.ts",
