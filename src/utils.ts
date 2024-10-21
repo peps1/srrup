@@ -11,6 +11,7 @@ export const version = ver;
 export const MAX_UPLOAD_SIZE = 104857600;
 
 export const printHelpText = `Usage: srrup file.srr <file2.srr> <file3.srr>
+
 Upload one or more .srr files to srrdb.com, if no option is specified as listed below,
 all parameters are expected to be .srr files and will be uploaded.
 Output will be logged to ~/.config/srrdb/logs
