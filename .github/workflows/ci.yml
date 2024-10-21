@@ -15,11 +15,11 @@ jobs:
     strategy:
       matrix:
         compile-targets: [
-          { "target": "x86_64-unknown-linux-gnu", "dir": "linux-x86_64" },
-          { "target": "aarch64-unknown-linux-gnu", "dir": "linux-aarch64" },
-          { "target": "x86_64-pc-windows-msvc", "dir": "windows-x86_64" },
-          { "target": "x86_64-apple-darwin", "dir": "macos-x86_64" },
-          { "target": "aarch64-apple-darwin", "dir": "macos-aarch64" },
+          { "target": "x86_64-unknown-linux-gnu", "platform": "linux-x86_64" },
+          { "target": "aarch64-unknown-linux-gnu", "platform": "linux-aarch64" },
+          { "target": "x86_64-pc-windows-msvc", "platform": "windows-x86_64" },
+          { "target": "x86_64-apple-darwin", "platform": "macos-x86_64" },
+          { "target": "aarch64-apple-darwin", "platform": "macos-aarch64" },
         ]
 
     steps:
@@ -31,11 +31,11 @@ jobs:
           deno-version: v2.x
       - run: deno install
       - run: deno test --allow-env --allow-read --allow-sys --coverage --trace-leaks src/
-      - run: deno compile --allow-env --allow-read --allow-write --allow-sys --allow-net --target ${{ matrix.compile-targets.target }} -o bin/${{ matrix.compile-targets.dir }}/srrup src/index.ts
+      - run: deno compile --allow-env --allow-read --allow-write --allow-sys --allow-net --target ${{ matrix.compile-targets.target }} -o bin/srrup-${{ matrix.compile-targets.platform }} src/index.ts
       - uses: actions/upload-artifact@v4
         with:
-          name: srrup-${{ matrix.compile-targets.dir }}
-          path: bin/${{ matrix.compile-targets.dir }}/srrup*
+          name: srrup-${{ matrix.compile-targets.platform }}
+          path: bin/srrup*
           retention-days: 7
 
   release-github:
